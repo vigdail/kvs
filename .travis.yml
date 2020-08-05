@@ -1,0 +1,17 @@
+language: rust
+rust:
+  - stable
+cache: cargo
+
+os:
+  linux
+
+before_script:
+  - rustup component add clippy
+  - rustup component add rustfmt
+
+script:
+  - cargo fmt -- --check
+  - cargo clippy -- -D warnings
+  - cargo build --verbose
+  - cargo test --verbose
