@@ -1,48 +1,42 @@
-use clap::{App, AppSettings, Arg, SubCommand};
 use std::process::exit;
+use structopt::{clap, StructOpt};
+
+#[derive(StructOpt)]
+enum Config {
+    #[structopt(about = "Set the value of a string key to a string")]
+    Set {
+        #[structopt(required = true, help = "A string key")]
+        key: String,
+        #[structopt(required = true, help = "The string value of the key")]
+        value: String,
+    },
+    #[structopt(about = "Get the string value of a given string key")]
+    Get {
+        #[structopt(required = true, help = "A string key")]
+        key: String,
+    },
+    #[structopt(about = "Remove a given key")]
+    Rm {
+        #[structopt(required = true, help = "A string key")]
+        key: String,
+    },
+}
 
 fn main() {
-    let matches = App::new(env!("CARGO_PKG_NAME"))
-        .version(env!("CARGO_PKG_VERSION"))
-        .author(env!("CARGO_PKG_AUTHORS"))
-        .about(env!("CARGO_PKG_DESCRIPTION"))
-        .setting(AppSettings::ArgRequiredElseHelp)
-        .setting(AppSettings::VersionlessSubcommands)
-        .subcommand(
-            SubCommand::with_name("set")
-                .about("Set the value of a string key to a string")
-                .arg(Arg::with_name("KEY").help("A string key").required(true))
-                .arg(
-                    Arg::with_name("VALUE")
-                        .help("The string value of the key")
-                        .required(true),
-                ),
-        )
-        .subcommand(
-            SubCommand::with_name("get")
-                .about("Get the string value of a given string key")
-                .arg(Arg::with_name("KEY").help("A string key").required(true)),
-        )
-        .subcommand(
-            SubCommand::with_name("rm")
-                .about("Remove a given key")
-                .arg(Arg::with_name("KEY").help("A string key").required(true)),
-        )
-        .get_matches();
+    let config = Config::from_args();
 
-    match matches.subcommand() {
-        ("set", Some(_matches)) => {
+    match config {
+        Config::Set { .. } => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        ("get", Some(_matches)) => {
+        Config::Get { .. } => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        ("rm", Some(_matches)) => {
+        Config::Rm { .. } => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        _ => unreachable!(),
     }
 }
