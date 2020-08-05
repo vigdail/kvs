@@ -31,15 +31,15 @@ fn main() {
         .get_matches();
 
     match matches.subcommand() {
-        ("set", Some(matches)) => {
+        ("set", Some(_matches)) => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        ("get", Some(matches)) => {
+        ("get", Some(_matches)) => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        ("rm", Some(matches)) => {
+        ("rm", Some(_matches)) => {
             eprintln!("unimplemented");
             exit(-1);
         }
