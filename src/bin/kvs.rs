@@ -1,7 +1,8 @@
 use std::process::exit;
-use structopt::{clap, StructOpt};
+use structopt::StructOpt;
 
 #[derive(StructOpt)]
+#[allow(dead_code)]
 enum Config {
     #[structopt(about = "Set the value of a string key to a string")]
     Set {
@@ -26,15 +27,15 @@ fn main() {
     let config = Config::from_args();
 
     match config {
-        Config::Set { .. } => {
+        Config::Set { key: _, value: _ } => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        Config::Get { .. } => {
+        Config::Get { key: _ } => {
             eprintln!("unimplemented");
             exit(-1);
         }
-        Config::Rm { .. } => {
+        Config::Rm { key: _ } => {
             eprintln!("unimplemented");
             exit(-1);
         }
