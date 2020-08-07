@@ -112,7 +112,7 @@ fn cli_rm_stored() -> Result<()> {
         .current_dir(&temp_dir)
         .assert()
         .success()
-        .stdout(eq("Key not found").trim());
+        .stdout(eq("Key not found: key1").trim());
 
     Ok(())
 }

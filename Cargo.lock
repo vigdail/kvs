@@ -201,6 +201,8 @@ dependencies = [
  "failure",
  "failure_derive",
  "predicates",
+ "serde",
+ "serde_json",
  "structopt",
  "tempfile",
  "walkdir",

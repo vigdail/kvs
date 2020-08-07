@@ -1,5 +1,8 @@
+use std::env::current_dir;
 use std::process::exit;
 use structopt::StructOpt;
+
+use kvs::Result;
 
 #[derive(StructOpt)]
 #[allow(dead_code)]
@@ -23,21 +26,34 @@ enum Config {
     },
 }
 
-fn main() {
+fn main() -> Result<()> {
     let config = Config::from_args();
 
     match config {
-        Config::Set { key: _, value: _ } => {
-            eprintln!("unimplemented");
-            exit(-1);
+        Config::Set { key, value } => {
+            let mut storage = kvs::KvStore::open(current_dir()?)?;
+            storage.set(key, value)?;
         }
-        Config::Get { key: _ } => {
-            eprintln!("unimplemented");
-            exit(-1);
+        Config::Get { key } => {
+            let storage = kvs::KvStore::open(current_dir()?)?;
+            if let Some(value) = storage.get(key)? {
+                println!("{}", value);
+            } else {
+                println!("Key not found");
+            }
         }
-        Config::Rm { key: _ } => {
-            eprintln!("unimplemented");
-            exit(-1);
+        Config::Rm { key } => {
+            let mut storage = kvs::KvStore::open(current_dir()?)?;
+            match storage.remove(key) {
+                Ok(()) => {}
+                Err(kvs::Error::KeyNotFound(_)) => {
+                    println!("Key not found");
+                    exit(1);
+                }
+                Err(e) => return Err(e),
+            }
         }
     }
+
+    Ok(())
 }
