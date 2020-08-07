@@ -42,7 +42,7 @@ impl KvStore {
         };
         self.store.insert(key, value);
         self.file
-            .write(&serde_json::to_string(&command)?.as_bytes())?;
+            .write_all(&serde_json::to_string(&command)?.as_bytes())?;
 
         Ok(())
     }
@@ -55,7 +55,7 @@ impl KvStore {
         let command = Command::Rm { key: key.clone() };
         self.store.remove(&key).ok_or(Error::KeyNotFound(key))?;
         self.file
-            .write(&serde_json::to_string(&command)?.as_bytes())?;
+            .write_all(&serde_json::to_string(&command)?.as_bytes())?;
 
         Ok(())
     }
