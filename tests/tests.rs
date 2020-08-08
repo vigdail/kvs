@@ -62,7 +62,6 @@ fn cli_set() {
 }
 
 #[test]
-#[ignore = "unimplemented"]
 fn cli_get_stored() -> Result<()> {
     let temp_dir = TempDir::new().expect("unable to create temporary working directory");
 
@@ -92,7 +91,6 @@ fn cli_get_stored() -> Result<()> {
 
 // `kvs rm <KEY>` should print nothing and exit with zero.
 #[test]
-#[ignore = "unimplemented"]
 fn cli_rm_stored() -> Result<()> {
     let temp_dir = TempDir::new().expect("unable to create temporary working directory");
 
@@ -114,7 +112,7 @@ fn cli_rm_stored() -> Result<()> {
         .current_dir(&temp_dir)
         .assert()
         .success()
-        .stdout(eq("Key not found: key1").trim());
+        .stdout(eq("Key not found").trim());
 
     Ok(())
 }
@@ -181,7 +179,6 @@ fn cli_invalid_subcommand() {
 
 // Should get previously stored value.
 #[test]
-#[ignore = "unimplemented"]
 fn get_stored_value() -> Result<()> {
     let temp_dir = TempDir::new().expect("unable to create temporary working directory");
     let mut store = KvStore::open(temp_dir.path())?;
@@ -194,7 +191,7 @@ fn get_stored_value() -> Result<()> {
 
     // Open from disk again and check persistent data.
     drop(store);
-    let store = KvStore::open(temp_dir.path())?;
+    let mut store = KvStore::open(temp_dir.path())?;
     assert_eq!(store.get("key1".to_owned())?, Some("value1".to_owned()));
     assert_eq!(store.get("key2".to_owned())?, Some("value2".to_owned()));
 
@@ -203,7 +200,6 @@ fn get_stored_value() -> Result<()> {
 
 // Should overwrite existent value.
 #[test]
-#[ignore = "unimplemented"]
 fn overwrite_value() -> Result<()> {
     let temp_dir = TempDir::new().expect("unable to create temporary working directory");
     let mut store = KvStore::open(temp_dir.path())?;
@@ -234,7 +230,7 @@ fn get_non_existent_value() -> Result<()> {
 
     // Open from disk again and check persistent data.
     drop(store);
-    let store = KvStore::open(temp_dir.path())?;
+    let mut store = KvStore::open(temp_dir.path())?;
     assert_eq!(store.get("key2".to_owned())?, None);
 
     Ok(())
@@ -294,7 +290,7 @@ fn compaction() -> Result<()> {
 
         drop(store);
         // reopen and check content.
-        let store = KvStore::open(temp_dir.path())?;
+        let mut store = KvStore::open(temp_dir.path())?;
         for key_id in 0..1000 {
             let key = format!("key{}", key_id);
             assert_eq!(store.get(key)?, Some(format!("{}", iter)));

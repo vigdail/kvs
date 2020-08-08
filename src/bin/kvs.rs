@@ -35,7 +35,7 @@ fn main() -> Result<()> {
             storage.set(key, value)?;
         }
         Config::Get { key } => {
-            let storage = kvs::KvStore::open(current_dir()?)?;
+            let mut storage = kvs::KvStore::open(current_dir()?)?;
             if let Some(value) = storage.get(key)? {
                 println!("{}", value);
             } else {
