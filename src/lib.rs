@@ -90,7 +90,7 @@ impl KvStore {
             let reader = self
                 .readers
                 .get_mut(&cmd_pos.gen)
-                .expect(&format!("Can't find log file: {}.log", cmd_pos.gen));
+                .unwrap_or_else(|| panic!("Can't find log file: {}.log", cmd_pos.gen));
 
             reader.seek(SeekFrom::Start(cmd_pos.pos))?;
             let cmd_reader = reader.take(cmd_pos.len);
@@ -117,7 +117,7 @@ impl KvStore {
             }
             Ok(())
         } else {
-            Err(Error::KeyNotFound(key))?
+            Err(Error::KeyNotFound(key))
         }
     }
 
@@ -163,7 +163,7 @@ impl KvStore {
             let reader = self
                 .readers
                 .get_mut(&cmd_pos.gen)
-                .expect(&format!("Cannot find log reader: {}", cmd_pos.gen));
+                .unwrap_or_else(|| panic!("Cannot find log reader: {}", cmd_pos.gen));
             if reader.pos != cmd_pos.pos {
                 reader.seek(SeekFrom::Start(cmd_pos.pos))?;
             }
