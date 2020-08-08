@@ -257,13 +257,12 @@ fn remove_key() -> Result<()> {
 // Insert data until total size of the directory decreases.
 // Test data correctness after compaction.
 #[test]
-#[ignore = "unimplemented"]
 fn compaction() -> Result<()> {
     let temp_dir = TempDir::new().expect("unable to create temporary working directory");
-    let mut store = KvStore::open(temp_dir.path())?;
+    let mut store = KvStore::open(&temp_dir.path())?;
 
     let dir_size = || {
-        let entries = WalkDir::new(temp_dir.path()).into_iter();
+        let entries = WalkDir::new(&temp_dir.path()).into_iter();
         let len: walkdir::Result<u64> = entries
             .map(|res| {
                 res.and_then(|entry| entry.metadata())
@@ -282,6 +281,7 @@ fn compaction() -> Result<()> {
         }
 
         let new_size = dir_size();
+        // eprintln!("{}", new_size);
         if new_size > current_size {
             current_size = new_size;
             continue;

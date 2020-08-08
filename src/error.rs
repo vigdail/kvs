@@ -9,6 +9,8 @@ pub enum Error {
     Serde(#[cause] serde_json::Error),
     #[fail(display = "Key not found: {}", _0)]
     KeyNotFound(String),
+    #[fail(display = "Unexpected command")]
+    UnexpectedCommandType,
 }
 
 impl From<io::Error> for Error {
