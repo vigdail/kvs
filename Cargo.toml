@@ -1,5 +1,6 @@
 [package]
 authors = ["Vigdail <vigdail.dev@gmail.com>"]
+autotests = false
 description = "In-memory key/value storage"
 edition = "2018"
 name = "kvs"
@@ -11,11 +12,15 @@ version = "0.1.0"
 failure = "0.1.8"
 failure_derive = "0.1.8"
 serde = "1.0.114"
-structopt = "0.3.15"
 serde_json = "1.0.57"
+structopt = "0.3.15"
 
 [dev-dependencies]
 assert_cmd = "0.11.0"
 predicates = "1.0.0"
 tempfile = "3.1.0"
 walkdir = "2.3.1"
+
+[[test]]
+name = "integration"
+path = "tests/lib.rs"

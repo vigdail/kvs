@@ -2,7 +2,7 @@ use std::env::current_dir;
 use std::process::exit;
 use structopt::StructOpt;
 
-use kvs::Result;
+use kvs::{KvsEngine, Result};
 
 #[derive(StructOpt)]
 #[allow(dead_code)]
